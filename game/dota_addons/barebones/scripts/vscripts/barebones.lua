@@ -267,38 +267,12 @@ end
 function GameMode:OnHeroInGame(hero)
 	print("[BAREBONES] Hero spawned in game for first time -- " .. hero:GetUnitName())
 
-	if not self.greetPlayers then
-		-- At this point a player now has a hero spawned in your map.
-		
-		-- Note: ColorIt is a function in util.lua.
-	    local firstLine = ColorIt("Welcome to ", "green") .. ColorIt("Barebones! ", "magenta") .. ColorIt("v0.1", "blue");
-	    local secondLine = ColorIt("Developer: ", "green") .. ColorIt("XXX", "orange")
-		-- Send the first greeting in 4 secs.
-		Timers:CreateTimer(4, function()
-	        GameRules:SendCustomMessage(firstLine, 0, 0)
-	        GameRules:SendCustomMessage(secondLine, 0, 0)
-		end)
-
-		self.greetPlayers = true
-	end
-
 	-- Store a reference to the player handle inside this hero handle.
 	hero.player = PlayerResource:GetPlayer(hero:GetPlayerID())
 	-- Store the player's name inside this hero handle.
 	hero.playerName = PlayerResource:GetPlayerName(hero:GetPlayerID())
 	-- Store this hero handle in this table.
 	table.insert(self.vPlayers, hero)
-
-	if Testing then
-		Say(nil, "Testing is on.", false)
-	end
-
-	-- This function comes from util.lua and will go through all the hero's abilities and set
-	-- their level to 1, and it spends the first given ability point in the process.
-	InitAbilities(hero)
-
-	-- Show a popup with game instructions.
-    ShowGenericPopupToPlayer(hero.player, "#barebones_instructions_title", "#barebones_instructions_body", "", "", DOTA_SHOWGENERICPOPUP_TINT_SCREEN )
 
 	-- This line for example will set the starting gold of every hero to 500 unreliable gold
 	hero:SetGold(500, false)
@@ -518,18 +492,6 @@ function GameMode:OnRuneActivated (keys)
 	local player = PlayerResource:GetPlayer(keys.PlayerID)
 	local rune = keys.rune
 
-	--[[ Rune Can be one of the following types
-	DOTA_RUNE_DOUBLEDAMAGE
-	DOTA_RUNE_HASTE
-	DOTA_RUNE_HAUNTED
-	DOTA_RUNE_ILLUSION
-	DOTA_RUNE_INVISIBILITY
-	DOTA_RUNE_MYSTERY
-	DOTA_RUNE_RAPIER
-	DOTA_RUNE_REGENERATION
-	DOTA_RUNE_SPOOKY
-	DOTA_RUNE_TURBO
-	]]
 end
 
 -- A player took damage from a tower
@@ -574,28 +536,6 @@ function GameMode:OnEntityKilled( keys )
 
 	if keys.entindex_attacker ~= nil then
 		killerEntity = EntIndexToHScript( keys.entindex_attacker )
-	end
-
-	if killedUnit:IsRealHero() then
-		print ("KILLEDKILLER: " .. killedUnit:GetName() .. " -- " .. killerEntity:GetName())
-		if killedUnit:GetTeam() == DOTA_TEAM_BADGUYS and killerEntity:GetTeam() == DOTA_TEAM_GOODGUYS then
-			self.nRadiantKills = self.nRadiantKills + 1
-			if END_GAME_ON_KILLS and self.nRadiantKills >= KILLS_TO_END_GAME_FOR_TEAM then
-				GameRules:SetSafeToLeave( true )
-				GameRules:SetGameWinner( DOTA_TEAM_GOODGUYS )
-			end
-		elseif killedUnit:GetTeam() == DOTA_TEAM_GOODGUYS and killerEntity:GetTeam() == DOTA_TEAM_BADGUYS then
-			self.nDireKills = self.nDireKills + 1
-			if END_GAME_ON_KILLS and self.nDireKills >= KILLS_TO_END_GAME_FOR_TEAM then
-				GameRules:SetSafeToLeave( true )
-				GameRules:SetGameWinner( DOTA_TEAM_BADGUYS )
-			end
-		end
-
-		if SHOW_KILLS_ON_TOPBAR then
-			GameRules:GetGameModeEntity():SetTopBarTeamValue ( DOTA_TEAM_BADGUYS, self.nDireKills )
-			GameRules:GetGameModeEntity():SetTopBarTeamValue ( DOTA_TEAM_GOODGUYS, self.nRadiantKills )
-		end
 	end
 
 	-- Put code here to handle when an entity gets killed
