@@ -194,7 +194,7 @@ function GameMode:CaptureGameMode()
 		mode:SetRemoveIllusionsOnDeath( REMOVE_ILLUSIONS_ON_DEATH )
 
 		self:OnFirstPlayerLoaded()
-	endz
+	end
 end
 
 -- This is an example console command
@@ -281,26 +281,9 @@ function GameMode:OnGameInProgress()
 	print("[BAREBONES] The game has officially begun")
 
 	Timers:CreateTimer(30, function() -- Start this timer 30 game-time seconds later
-		print("This function is called 30 seconds after the game begins, and every 30 seconds thereafter")
+		--print("This function is called 30 seconds after the game begins, and every 30 seconds thereafter")
 		return 30.0 -- Rerun this timer every 30 game-time seconds
 	end)
-end
-
-function GameMode:PlayerSay( keys )
-	local ply = keys.ply
-	local hero = ply:GetAssignedHero()
-	local txt = keys.text
-
-	if keys.teamOnly then
-		-- This text was team-only.
-	end
-
-	if txt == nil or txt == "" then
-		return
-	end
-
-  -- At this point we have valid text from a player.
-	print("P" .. ply .. " wrote: " .. keys.text)
 end
 
 -- Cleanup a player when they leave
