@@ -1,29 +1,10 @@
--- module_loader by Adynathos.
-BASE_MODULES = {
-	'util',
-	'timers',
-	'physics',
-	'lib.statcollection',
-	'barebones',
-}
+--[[
+	Basic Barebones
+]]
 
-local function load_module(mod_name)
-	-- load the module in a monitored environment
-	local status, err_msg = pcall(function()
-		require(mod_name)
-	end)
-
-	if status then
-		log(' module ' .. mod_name .. ' OK')
-	else
-		err(' module ' .. mod_name .. ' FAILED: '..err_msg)
-	end
-end
-
--- Load all modules
-for i, mod_name in pairs(BASE_MODULES) do
-	load_module(mod_name)
-end
+-- Required files to be visible from anywhere
+require( 'timers' )
+require( 'barebones' )
 
 function Precache( context )
 	-- NOTE: IT IS RECOMMENDED TO USE A MINIMAL AMOUNT OF LUA PRECACHING, AND A MAXIMAL AMOUNT OF DATADRIVEN PRECACHING.
