@@ -125,7 +125,7 @@ function GameMode:InitGameMode()
 	self.bSeenWaitForPlayers = false
 
 	-- Commands can be registered for debugging purposes or as functions that can be called by the custom Scaleform UI
-	Convars:RegisterCommand( "command_example", Dynamic_Wrap(dotacraft, 'ExampleConsoleCommand'), "A console command example", 0 )
+	Convars:RegisterCommand( "command_example", Dynamic_Wrap(GameMode, 'ExampleConsoleCommand'), "A console command example", 0 )
 
 	print('[BAREBONES] Done loading Barebones gamemode!\n\n')
 end
